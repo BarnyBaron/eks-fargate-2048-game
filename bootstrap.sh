@@ -3,11 +3,11 @@
 EKS_CLUSTER_NAME=eks-alb-2048game
 
 # Sync time
-sudo service ntpd stop
-sudo ntpdate pool.ntp.org
-sudo service ntpd start
-sleep 10
-sudo ntpstat || true
+# sudo service ntpd stop
+# sudo ntpdate pool.ntp.org
+#sudo service ntpd start
+#sleep 10
+# sudo ntpstat || true
 
 # Upgrade awscli
 
@@ -21,7 +21,7 @@ source ~/.bash_profile
 
 echo "Installing kubectl"
 
-curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.30.0/2024-05-12/bin/darwin/amd64/kubectl
+curl -o curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.30.0/2024-05-12/bin/linux/arm64/kubectl
 chmod +x ./kubectl
 mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
 kubectl version --short --client
@@ -61,11 +61,11 @@ echo; echo "For example: arn:aws:sts::1234567890:assumed-role/cloud9-AdminRole-1
 
 echo; echo "Creating EKS cluster. It can take up to 30 minutes."
 
-if [ "$REGION" == "us-east-1" ]; then
+# if [ "$REGION" == "us-east-1" ]; then
     # exclude use1-az3 from us-east-1 region due to unavailability
-    AZs=$(aws ec2 describe-availability-zones --filters "Name=zone-id,Values=use1-az1,use1-az2,use1-az4,use1-az5,use1-az6" --query "AvailabilityZones[0:2].ZoneName" --output text | tr "\\t" ",")
-    ZONES="--zones=$AZs"
-fi
+#    AZs=$(aws ec2 describe-availability-zones --filters "Name=zone-id,Values=use1-az1,use1-az2,use1-az4,use1-az5,use1-az6" --query "AvailabilityZones[0:2].ZoneName" --output text | tr "\\t" ",")
+#    ZONES="--zones=$AZs"
+# fi
 
 eksctl create cluster --ssh-access --name eks-alb-2048game --region us-east-1 --fargate
 
