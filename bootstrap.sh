@@ -5,8 +5,8 @@ EKS_CLUSTER_NAME=eks-alb-2048game
 # Sync time
 # sudo service ntpd stop
 # sudo ntpdate pool.ntp.org
-#sudo service ntpd start
-#sleep 10
+# sudo service ntpd start
+# sleep 10
 # sudo ntpstat || true
 
 # Upgrade awscli
@@ -71,7 +71,7 @@ eksctl create cluster --ssh-access --name eks-alb-2048game --region us-east-1 --
 
 # To allow the cluster to use AWS Identity and Access Management (IAM) for service accounts
 
-eksctl utils associate-iam-oidc-provider --cluster $EKS_CLUSTER_NAME --approve
+eksctl utils associate-iam-oidc-provider --cluster eks-alb-2048game --approve
 
 POLICY_ARN=$(aws iam list-policies --query "Policies[?PolicyName=='ALBIngressControllerIAMPolicy'].Arn" --output text)
 
@@ -86,7 +86,7 @@ fi
 eksctl create iamserviceaccount \
     --name aws-load-balancer-controller \
     --namespace kube-system \
-    --cluster $EKS_CLUSTER_NAME \
+    --cluster eks-alb-2048game \
     --attach-policy-arn $POLICY_ARN \
     --override-existing-serviceaccounts \
     --approve
